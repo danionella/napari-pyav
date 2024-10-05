@@ -1,0 +1,15 @@
+name: napari-pyav
+display_name: pyav video plugin
+# use 'hidden' to remove plugin from napari hub search results
+visibility: public
+# see https://napari.org/stable/plugins/manifest.html for valid categories
+categories: ["Annotation", "Segmentation", "Acquisition"]
+contributions:
+  commands:
+    - id: napari-pyav.get_reader
+      python_name: napari_pyav._reader:napari_get_reader
+      title: Open data with pyav video plugin
+  readers:
+    - command: napari-pyav.get_reader
+      accepts_directories: false
+      filename_patterns: ['*.npy']
