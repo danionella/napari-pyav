@@ -1,5 +1,4 @@
 import numpy as np
-
 from napari_pyav import napari_get_reader
 
 
@@ -9,7 +8,7 @@ def test_reader(tmp_path):
     import urllib.request
     video_path = str(tmp_path / "test.mp4")
     urllib.request.urlretrieve("https://ia803405.us.archive.org/27/items/archive-video-files/test.mp4", video_path)
-    reader = napari_get_reader([video_path])[0]
+    reader = napari_get_reader([video_path])([video_path])[0]
     for frame in reader:
         assert isinstance(frame, np.ndarray)
         # """An example of how you might test your plugin."""
@@ -34,6 +33,5 @@ def test_reader(tmp_path):
 
 
 def test_get_reader_pass():
-    assert True
-#     reader = napari_get_reader("fake.file")
-#     assert reader is None
+    reader = napari_get_reader("fake.file")
+    assert reader is None

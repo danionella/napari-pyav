@@ -22,14 +22,11 @@ def napari_get_reader(path):
         If the path is a recognized format, return a function that accepts the
         same path or list of paths, and returns a list of layer data tuples.
     """
-    # if isinstance(path, list):
-    #     raise ValueError("This reader only supports single file paths")
+    paths = [path] if isinstance(path, str) else path
+    for path in paths:
+        if not path.endswith(".mp4"):
+            return None
 
-    # # if we know we cannot read the file, we immediately return None.
-    # if not path.endswith(".mp4"):
-    #     return None
-
-    # otherwise we return the *function* that can read ``path``.
     return reader_function
 
 
