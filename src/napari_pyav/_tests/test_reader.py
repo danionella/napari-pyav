@@ -11,7 +11,7 @@ def test_reader(tmp_path):
     reader = napari_get_reader([video_path])([video_path])[0]
     print(reader, type(reader))
     for frame in reader:
-        assert isinstance(frame, np.ndarray)
+        assert isinstance(frame, np.ndarray), str(type(reader)) + str(reader)
         # """An example of how you might test your plugin."""
 
     # # write some fake data using your supported file format
