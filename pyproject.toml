@@ -1,7 +1,7 @@
 [project]
 name = "napari-pyav"
 dynamic = ["version"]
-description = "desc"
+description = "Napari plugin for reading videos using PyAV"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [

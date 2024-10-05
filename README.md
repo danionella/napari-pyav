@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/danionella/napari-pyav/branch/main/graph/badge.svg)](https://codecov.io/gh/danionella/napari-pyav)
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-pyav)](https://napari-hub.org/plugins/napari-pyav)
 
-desc
+Napari plugin for reading videos using [PyAV](https://github.com/PyAV-Org/PyAV). Inspired by the [napari-video](https://github.com/janclemenslab/napari-video) project, which served us very well for many years. For some long videos, however, its dependency on opencv caused seek glitches, so we implemented this alternative plugin based on PyAV.
 
 ----------------------------------
 
