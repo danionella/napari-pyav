@@ -9,6 +9,7 @@ def test_reader(tmp_path):
     video_path = str(tmp_path / "test.mp4")
     urllib.request.urlretrieve("https://ia803405.us.archive.org/27/items/archive-video-files/test.mp4", video_path)
     reader = napari_get_reader([video_path])([video_path])[0]
+    print(reader, type(reader))
     for frame in reader:
         assert isinstance(frame, np.ndarray)
         # """An example of how you might test your plugin."""
