@@ -135,7 +135,7 @@ class FastVideoReader:
             frames = [self.read_frame(i) for i in np.r_[index]]
             return np.array(frames)
         else:
-            raise NotImplementedError, "slicing of {type(index)} : {index} not implemented yet"
+            raise NotImplementedError(f"slicing of {type(index)} : {index} not implemented yet")
     
     def __enter__(self):
         return self
