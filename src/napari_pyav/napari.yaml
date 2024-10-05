@@ -12,4 +12,4 @@ contributions:
   readers:
     - command: napari-pyav.get_reader
       accepts_directories: false
-      filename_patterns: ['*.npy']
+      filename_patterns: ['*.mp4']
