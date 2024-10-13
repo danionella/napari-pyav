@@ -6,7 +6,7 @@ def test_reader(tmp_path):
 
     import urllib.request
     video_path = str(tmp_path / "test.mp4")
-    urllib.request.urlretrieve("https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", video_path)
+    urllib.request.urlretrieve(r"https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", video_path)
     reader = napari_get_reader([video_path])([video_path])[0][0]
     print(reader, type(reader))
     for frame in reader:
