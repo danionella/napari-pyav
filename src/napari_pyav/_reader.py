@@ -74,10 +74,8 @@ class FastVideoReader:
         self.stream.codec_context.thread_type = 'AUTO' if threading else 'SLICE' # FRAME/AUTO/SLICE
         self.framegenerator = self.container.decode(video=0)
         self.read_format = read_format
-        self._pts_lookup = pts_lookup
         self._pts_per_frame = 1 / (self.stream.guessed_rate * self.stream.time_base)
-        self._init_pts = int(next(self.framegenerator).pts)
-        self._frame_to_pts = lambda n: round(n * self._pts_per_frame) + self._init_pts
+        self._frame_to_pts = lambda n: round(n * self._pts_per_frame) + self.stream.start_time
         self.rewind()
 
     def read(self):
@@ -107,7 +105,7 @@ class FastVideoReader:
         if self.last_pts is not None and self.last_pts == self._frame_to_pts(frame_idx-1):
             return self.read()
         target_pts = self._frame_to_pts(frame_idx)
-        self.container.seek(target_pts-self._init_pts, backward=True, stream=self.container.streams.video[0])
+        self.container.seek(target_pts-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
         self.framegenerator = self.container.decode(video=0)
         frame_obj = next(self.framegenerator)
         while frame_obj.pts != target_pts:
