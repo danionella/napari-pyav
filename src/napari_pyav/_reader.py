@@ -67,7 +67,7 @@ class FastVideoReader:
         pts_lookup (np.ndarray): lookup seek table for pts values. Default is None (generate when needed).
         thread_count (int): number of threads to use for decoding. Default is 0 (auto).
     '''
-    def __init__(self, filename, threading=True, read_format='gray', pts_lookup=None, thread_count=0):
+    def __init__(self, filename, read_format='rgb24', threading=True, thread_count=0, forgiving=True):
         self.container = av.open(filename)
         self.stream = self.container.streams.video[0]
         self.stream.codec_context.thread_count = thread_count
@@ -168,7 +168,10 @@ class FastVideoReader:
 
     @property
     def shape(self):
-        return (self.nframes, *self.frame_shape)
+        if self.read_format == 'gray':
+            return (self.nframes, *self.frame_shape)
+        elif self.read_format in ['rgb24', 'bgr24']:
+            return (self.nframes, *self.frame_shape, 3)
 
     @property
     def ndim(self):
