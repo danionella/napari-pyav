@@ -1,10 +1,10 @@
 # napari-pyav
 
 [![License MIT](https://img.shields.io/pypi/l/napari-pyav.svg?color=green)](https://github.com/danionella/napari-pyav/raw/main/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/napari-pyav.svg?color=green)](https://pypi.org/project/napari-pyav)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-pyav.svg?color=green)](https://python.org)
+[![PyPI](https://img.shields.io/pypi/v/napari-pyav.svg?color=green)](https://pypi.org/project/napari-pyav)
+[![Conda Version](https://img.shields.io/conda/v/danionella/napari_pyav)](https://anaconda.org/danionella/napari_pyav)
 [![tests](https://github.com/danionella/napari-pyav/workflows/tests/badge.svg)](https://github.com/danionella/napari-pyav/actions)
-[![codecov](https://codecov.io/gh/danionella/napari-pyav/branch/main/graph/badge.svg)](https://codecov.io/gh/danionella/napari-pyav)
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-pyav)](https://napari-hub.org/plugins/napari-pyav)
 
 Napari plugin for reading videos using [PyAV](https://github.com/PyAV-Org/PyAV). Inspired by the [napari-video](https://github.com/janclemenslab/napari-video) project, which served us very well for many years. For some long videos, however, its dependency on opencv caused seek glitches, so we implemented this alternative plugin based on PyAV.
@@ -27,6 +27,10 @@ You can install `napari-pyav` via [pip]:
 
     pip install napari-pyav
 
+
+Or via [conda](https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge): 
+
+    conda install danionella::napari_pyav
 
 
 To install latest development version :
