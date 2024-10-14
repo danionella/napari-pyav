@@ -118,16 +118,17 @@ class FastVideoReader:
         self.container.seek(target_pts-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
         self.framegenerator = self.container.decode(video=0)
         frame_obj = next(self.framegenerator)
+        wiggle_pts = self._pts_per_frame/10 # accept slightly (<10%) wonky frame rates
         if frame_obj.pts > target_pts: #detecting overshoot (may happen due to variable frame rate)
             n_back = 100
             warn_transcode(f'Seek overshoot ({frame_obj.pts} > {target_pts}). Backtracking by {n_back} frames...')
             self.container.seek(self._frame_to_pts(frame_idx-n_back)-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
             self.framegenerator = self.container.decode(video=0)
             frame_obj = next(self.framegenerator)
-        while frame_obj.pts < target_pts:
+        while frame_obj.pts < (target_pts - wiggle_pts): 
             frame_obj = next(self.framegenerator)
         # frame_obj.pts should now be equal to target_pts
-        if frame_obj.pts != target_pts:
+        if np.abs(frame_obj.pts - target_pts) > wiggle_pts:
             warn_transcode(f'Seek problem with frame {frame_idx}! pts: {frame_obj.pts}; target: {target_pts}; dts: {frame_obj.dts}; pict_type: {str(frame_obj.pict_type)}')
         frame = frame_obj.to_ndarray(format=self.read_format)
         self.last_pts = frame_obj.pts
