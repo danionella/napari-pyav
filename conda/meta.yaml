@@ -2,16 +2,13 @@
 {% set environment = load_file_data("../environment.yml", from_recipe_dir=True) %}
 {% set name = data['project']['name'].replace('-', '_') %}
 
-{% set init_file = load_file_data("../path_to_your_package/__init__.py", from_recipe_dir=True) %}
-{% set version = init_file | regex_search('__version__ = "(.*)"') %}
-
 package:
   name: {{ name|lower }}
-  #version: {{ data["project"]["version"] }}
+  version: {{ data["project"]["version"] }}
   version: {{ version }}
 
 source:
-  url: https://files.pythonhosted.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://files.pythonhosted.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ data["project"]["version"] }}.tar.gz
   
 build:
   number: 0
