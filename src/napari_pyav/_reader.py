@@ -8,6 +8,7 @@ https://napari.org/stable/plugins/guides.html?#readers
 import numpy as np
 import av
 import warnings
+
 warnings.simplefilter("once")
 
 def napari_get_reader(path):
