@@ -39,6 +39,7 @@ testing = [
 napari-pyav = "napari_pyav:napari.yaml"
 
 [project.urls]
+"Homepage" = "https://github.com/danionella/napari-pyav"
 "Bug Tracker" = "https://github.com/danionella/napari-pyav/issues"
 "Documentation" = "https://github.com/danionella/napari-pyav#README.md"
 "Source Code" = "https://github.com/danionella/napari-pyav"
