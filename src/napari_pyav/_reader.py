@@ -82,7 +82,7 @@ class FastVideoReader:
         if self.container.format.variable_fps:
             warn_or_raise(f'Variable frame rate video detected. Seeking will likely be unrealiable.', self.forgiving)
         if self.stream.codec_context.has_b_frames:
-            warn_or_raise(f'B-frames detected. Seeking will likely be unrealiable.', self.forgiving)
+            warn_or_raise(f'B-frames detected. Seeking may be unrealiable.', self.forgiving)
 
     def read(self):
         ''' Read the next frame in the specified format. '''
@@ -114,10 +114,17 @@ class FastVideoReader:
         self.container.seek(target_pts-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
         self.framegenerator = self.container.decode(video=0)
         frame_obj = next(self.framegenerator)
+        if frame_obj.pts > target_pts: #detecting overshoot (may happen due to variable frame rate)
+            n_back = 100
+            warn_or_raise(f'Seek overshoot ({frame_obj.pts} > {target_pts}). Backtracking by {n_back} frames...', forgiving=True)
+            self.container.seek(self._frame_to_pts(frame_idx-n_back)-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
+            self.framegenerator = self.container.decode(video=0)
+            frame_obj = next(self.framegenerator)
         while frame_obj.pts < target_pts:
             frame_obj = next(self.framegenerator)
-        if frame_obj.pts > target_pts:
-            warn_or_raise(f'Seek problem / pts mismatch: {frame_obj.pts} > {target_pts}.', self.forgiving)
+        # frame_obj.pts should now be equal to target_pts
+        if frame_obj.pts != target_pts:
+            warn_or_raise(f'Seek problem / pts mismatch: {frame_obj.pts} != {target_pts}.', self.forgiving)
         frame = frame_obj.to_ndarray(format=self.read_format)
         self.last_pts = frame_obj.pts
         return frame
@@ -198,8 +205,8 @@ class FastVideoReader:
         return shape
 
 
-def warn_or_raise(msg, forgiving=False):
-    msg = msg + f' Consider transcoding. Example command: \nffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4"\n'
+def warn_or_raise(msg, forgiving=True):
+    msg = msg + f' Consider transcoding (ffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4").'
     if forgiving:
         warnings.warn(msg)
     else:
