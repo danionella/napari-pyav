@@ -8,6 +8,7 @@ https://napari.org/stable/plugins/guides.html?#readers
 import numpy as np
 import av
 import warnings
+warnings.simplefilter("once")
 
 def napari_get_reader(path):
     """A basic implementation of a Reader contribution.
@@ -80,9 +81,12 @@ class FastVideoReader:
         self.rewind()
         self.forgiving = forgiving
         if self.container.format.variable_fps:
-            warn_or_raise(f'Variable frame rate video detected. Seeking will likely be unrealiable.', self.forgiving)
-        if self.stream.codec_context.has_b_frames:
-            warn_or_raise(f'B-frames detected. Seeking may be unrealiable.', self.forgiving)
+            warn_transcode(f'Variable frame rate video detected. Seeking will likely be unrealiable.')
+        # if self.stream.codec_context.has_b_frames:
+        #     warnings.warn(f'B-frames detected. Seeking may be unrealiable.')
+        #     warn_transcode()
+        if self.stream.average_rate != self.stream.guessed_rate:
+            warn_transcode(f'Average frame rate ({self.stream.average_rate}) is different from nominal frame rate ({self.stream.guessed_rate}). Seeking may be unrealiable.')
 
     def read(self):
         ''' Read the next frame in the specified format. '''
@@ -116,7 +120,7 @@ class FastVideoReader:
         frame_obj = next(self.framegenerator)
         if frame_obj.pts > target_pts: #detecting overshoot (may happen due to variable frame rate)
             n_back = 100
-            warn_or_raise(f'Seek overshoot ({frame_obj.pts} > {target_pts}). Backtracking by {n_back} frames...', forgiving=True)
+            warn_transcode(f'Seek overshoot ({frame_obj.pts} > {target_pts}). Backtracking by {n_back} frames...')
             self.container.seek(self._frame_to_pts(frame_idx-n_back)-self.stream.start_time, backward=True, stream=self.container.streams.video[0])
             self.framegenerator = self.container.decode(video=0)
             frame_obj = next(self.framegenerator)
@@ -124,7 +128,7 @@ class FastVideoReader:
             frame_obj = next(self.framegenerator)
         # frame_obj.pts should now be equal to target_pts
         if frame_obj.pts != target_pts:
-            warn_or_raise(f'Seek problem / pts mismatch: {frame_obj.pts} != {target_pts}.', self.forgiving)
+            warn_transcode(f'Seek problem with frame {frame_idx}! pts: {frame_obj.pts}; target: {target_pts}; dts: {frame_obj.dts}; pict_type: {str(frame_obj.pict_type)}')
         frame = frame_obj.to_ndarray(format=self.read_format)
         self.last_pts = frame_obj.pts
         return frame
@@ -205,12 +209,6 @@ class FastVideoReader:
         return shape
 
 
-def warn_or_raise(msg, forgiving=True):
-    msg = msg + f' Consider transcoding (ffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4").'
-    if forgiving:
-        warnings.warn(msg)
-    else:
-        raise SeekError(msg)
-    
-class SeekError(Exception):
-    pass
+def warn_transcode(msg):
+    warnings.warn(msg, stacklevel=2)
+    warnings.warn('Consider transcoding (ffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4").', stacklevel=2)
