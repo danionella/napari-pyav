@@ -25,7 +25,7 @@ jobs:
         python-version: '3.12'
     - name: Install dependencies
       run: |
-        conda install conda-build conda-verify anaconda-client
+        conda install python=3.12 conda-build conda-verify anaconda-client
     - name: Build
       run: |
         conda build -c conda-forge --output-folder . .
