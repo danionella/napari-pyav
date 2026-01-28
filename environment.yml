@@ -6,4 +6,8 @@ dependencies:
   - python>=3.9
   - pip
   - numpy
-  - av<14
+  - av
+  - python-sounddevice
+  - qtpy
+  - scikit-image
+  - magicgui
