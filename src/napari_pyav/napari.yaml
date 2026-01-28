@@ -1,5 +1,5 @@
 name: napari-pyav
-display_name: pyav video plugin
+display_name: video plugin
 # use 'hidden' to remove plugin from napari hub search results
 visibility: public
 # see https://napari.org/stable/plugins/manifest.html for valid categories
@@ -8,9 +8,9 @@ contributions:
   commands:
     - id: napari-pyav.get_reader
       python_name: napari_pyav._reader:napari_get_reader
-      title: Open data with pyav video plugin
+      title: Open data with pyav video reader
     - id: napari-pyav.av_widget
-      title: Open video player widget
+      title: Open AV player widget
       python_name: napari_pyav._widget:get_widget
   readers:
     - command: napari-pyav.get_reader
@@ -18,4 +18,4 @@ contributions:
       filename_patterns: ['*.mp4']
   widgets:
     - command: napari-pyav.av_widget
-      display_name: video player
+      display_name: AV player
