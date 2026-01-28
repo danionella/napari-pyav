@@ -2,7 +2,7 @@
 name = "napari-pyav"
 #dynamic = ["version"]
 version = "0.1.0"
-description = "Napari plugin for reading and playing videos with audio"
+description = "A napari video reader plugin and a widget to play videos with sound."
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "jlab.berlin" }, { email = "NOSPAM@example.com" }]
