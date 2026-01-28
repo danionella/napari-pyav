@@ -7,19 +7,14 @@
 [![tests](https://github.com/danionella/napari-pyav/workflows/tests/badge.svg)](https://github.com/danionella/napari-pyav/actions)
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-pyav)](https://napari-hub.org/plugins/napari-pyav)
 
-Napari plugin for reading videos using [PyAV](https://github.com/PyAV-Org/PyAV). Inspired by the [napari-video](https://github.com/janclemenslab/napari-video) project, which served us very well for many years. For some long videos, however, its dependency on opencv caused seek glitches, so we implemented this alternative plugin based on PyAV.
+A [napari] plugin for video reading, frame-accurate seeking and a widget to play videos with sound.
+
+<img width="312" height="199" alt="image" src="https://github.com/user-attachments/assets/0814d352-ae8c-4b88-809a-e5a53f595b7a" />
+
 
 ----------------------------------
 
 This [napari] plugin was generated with [Cookiecutter] using [@napari]'s [cookiecutter-napari-plugin] template.
-
-<!--
-Don't miss the full getting started guide to set up your new package:
-https://github.com/napari/cookiecutter-napari-plugin#getting-started
-
-and review the napari docs for plugin developers:
-https://napari.org/stable/plugins/index.html
--->
 
 ## Installation
 
