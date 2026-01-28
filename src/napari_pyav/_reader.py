@@ -91,7 +91,6 @@ class FastVideoReader:
         frame_obj = next(self.framegenerator)
         self.last_pts = frame_obj.pts
         im = frame_obj.to_ndarray(format=self.read_format)
-        #print(frame_obj.pts, frame_obj.dts, frame_obj.time)
         del frame_obj
         return im
 
@@ -131,42 +130,42 @@ class FastVideoReader:
         frame = frame_obj.to_ndarray(format=self.read_format)
         self.last_pts = frame_obj.pts
         return frame
-    
+
     def close(self):
         self.container.close()
-        
+
     def __del__(self):
         self.close()
-        
+
     def __getitem__(self, index):
         if isinstance(index, (int, np.integer)):  # single frame
             return self.read_frame(index)
-        elif isinstance(index, tuple) and isinstance(index[0], int):
-            return self.read_frame(index[0])
+        elif isinstance(index, tuple) and len(np.r_[index]) == 1:
+            return self.read_frame(np.r_[index][0])[None]
         elif isinstance(index, slice):
             frames = [self.read_frame(i) for i in np.r_[index]]
             return np.array(frames)
         else:
             raise NotImplementedError(f"slicing of {type(index)} : {index} not implemented yet")
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
         return False
-    
+
     def __iter__(self):
         self.rewind()
         return self
-    
+
     def __next__(self):
         try:
             return self.read()
         except:
             self.rewind()
             raise StopIteration
-    
+
     @property
     def frame_shape(self):
         ''' Return the shape of the video frames. '''
@@ -195,7 +194,7 @@ class FastVideoReader:
     @property
     def size(self):
         return np.product(self.shape)
-    
+
     @staticmethod
     def static_shape(filename):
         ''' Get the shape of a video (static method). 
@@ -209,5 +208,4 @@ class FastVideoReader:
 
 
 def warn_transcode(msg):
-    warnings.warn(msg, stacklevel=2)
-    warnings.warn('Consider transcoding (ffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4").', stacklevel=2)
+    warnings.warn(msg + '\nConsider transcoding (ffmpeg -y -i "input.mp4" -c:v libx264 -pix_fmt yuv420p -preset superfast -crf 23 "output.mp4").', stacklevel=2)

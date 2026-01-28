@@ -9,7 +9,13 @@ contributions:
     - id: napari-pyav.get_reader
       python_name: napari_pyav._reader:napari_get_reader
       title: Open data with pyav video plugin
+    - id: napari-pyav.av_widget
+      title: Open video player widget
+      python_name: napari_pyav._widget:get_widget
   readers:
     - command: napari-pyav.get_reader
       accepts_directories: false
       filename_patterns: ['*.mp4']
+  widgets:
+    - command: napari-pyav.av_widget
+      display_name: video player
