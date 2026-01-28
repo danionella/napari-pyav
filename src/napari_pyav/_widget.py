@@ -80,14 +80,14 @@ class CoalescedStepSetter(QtCore.QObject):
 
 
 @magicgui(
-    image={"label": "video layer"}, call_button=" Play audio", volume_dB={"widget_type": "FloatSlider", "min": -20, "max": 60})
+    image={"label": "video layer"}, call_button=" Play with audio", volume_dB={"widget_type": "FloatSlider", "min": -20, "max": 60})
 def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: float = 1.0, volume_dB: float = 20.0, rewind: bool = True):
 
     if GLOBAL_STATE["playing"]:
         GLOBAL_STATE["audio_stream"].stop()
         GLOBAL_STATE["playing"] = False
         _av_widget_function.call_button.set_icon("play")
-        _av_widget_function.call_button.text = " Play audio"
+        _av_widget_function.call_button.text = " Play with audio"
         return
 
     video_reader_obj = image.data
@@ -127,7 +127,7 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
         except StopIteration:
             GLOBAL_STATE["playing"] = False
             _av_widget_function.call_button.set_icon("play")
-            _av_widget_function.call_button.text = " Play audio"
+            _av_widget_function.call_button.text = " Play with audio"
             if rewind:
                 setter.request(0)
                 ar.seek(0)
@@ -138,7 +138,7 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
     audio_stream.start()
     GLOBAL_STATE["playing"] = True
     _av_widget_function.call_button.set_icon("pause")
-    _av_widget_function.call_button.text = " Pause audio"
+    _av_widget_function.call_button.text = " Pause"
     GLOBAL_STATE["audio_stream"] = audio_stream
 
 
