@@ -1,5 +1,5 @@
 name: napari-pyav
-display_name: video plugin
+display_name: AV plugin
 # use 'hidden' to remove plugin from napari hub search results
 visibility: public
 # see https://napari.org/stable/plugins/manifest.html for valid categories
