@@ -87,11 +87,19 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
     except Exception:
         pass
 
+    def toggle_enable(state: bool):
+        _av_widget_function.image.enabled = state
+        _av_widget_function.call_button.enabled = state
+        _av_widget_function.volume_dB.enabled = state
+        _av_widget_function.rewind.enabled = state
+        _av_widget_function.playback_speed.enabled = state
+
     if GLOBAL_STATE["playing"]:
         GLOBAL_STATE["audio_stream"].stop()
         GLOBAL_STATE["playing"] = False
         _av_widget_function.call_button.set_icon("play")
         _av_widget_function.call_button.text = " Play with audio"
+        toggle_enable(True)
         return
 
     video_reader_obj = image.data
@@ -135,6 +143,7 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
             GLOBAL_STATE["playing"] = False
             _av_widget_function.call_button.set_icon("play")
             _av_widget_function.call_button.text = " Play with audio"
+            toggle_enable(True)
             if rewind:
                 setter.request(0)
                 ar.seek(0)
@@ -144,9 +153,10 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
     audio_stream = sd.OutputStream(channels=2, callback=callback, blocksize=blocksize, samplerate=int(ar.audio_stream.codec_context.sample_rate*playback_speed))
     audio_stream.start()
     GLOBAL_STATE["playing"] = True
+    GLOBAL_STATE["audio_stream"] = audio_stream
     _av_widget_function.call_button.set_icon("pause")
     _av_widget_function.call_button.text = " Pause"
-    GLOBAL_STATE["audio_stream"] = audio_stream
+    toggle_enable(False)
 
 
 def get_widget(*args, **kwargs):
