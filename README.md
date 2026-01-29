@@ -7,7 +7,7 @@
 [![tests](https://github.com/danionella/napari-pyav/workflows/tests/badge.svg)](https://github.com/danionella/napari-pyav/actions)
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-pyav)](https://napari-hub.org/plugins/napari-pyav)
 
-A [napari] plugin for video reading, frame-accurate seeking and a widget to play videos with sound.
+A [napari] plugin for fast video reading, frame-accurate seeking and a widget to play videos with sound. Based on [PyAV](https://github.com/PyAV-Org/PyAV) and [sounddevice](https://github.com/spatialaudio/python-sounddevice).
 
 <img width="312" height="199" alt="image" src="https://github.com/user-attachments/assets/0814d352-ae8c-4b88-809a-e5a53f595b7a" />
 
