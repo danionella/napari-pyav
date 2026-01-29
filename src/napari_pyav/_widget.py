@@ -82,6 +82,10 @@ class CoalescedStepSetter(QtCore.QObject):
 @magicgui(
     image={"label": "video layer"}, call_button=" Play with audio", volume_dB={"widget_type": "FloatSlider", "min": -20, "max": 60})
 def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: float = 1.0, volume_dB: float = 20.0, rewind: bool = True):
+    try: 
+        viewer.window._qt_viewer.dims.stop()
+    except Exception:
+        pass
 
     if GLOBAL_STATE["playing"]:
         GLOBAL_STATE["audio_stream"].stop()
