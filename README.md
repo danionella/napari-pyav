@@ -9,7 +9,7 @@
 
 A [napari] plugin for fast video reading, frame-accurate seeking and a widget to play videos with sound. Based on [PyAV](https://github.com/PyAV-Org/PyAV) and [sounddevice](https://github.com/spatialaudio/python-sounddevice).
 
-<img width="312" height="199" alt="image" src="https://github.com/user-attachments/assets/0814d352-ae8c-4b88-809a-e5a53f595b7a" />
+<img width="321" height="191" alt="image" src="https://github.com/user-attachments/assets/426f5977-e0ba-4ae5-a2cc-599c017e44a6" />
 
 
 ----------------------------------
