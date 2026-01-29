@@ -99,7 +99,10 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
         return
     filename = str(video_reader_obj.container.name)
     ar = AudioReader(filename)
-    chunk, meta = ar.read()
+    blocksize = ar.audio_stream.codec_context.frame_size
+    if blocksize is None or blocksize <= 0:
+        napari.utils.notifications.show_error("Could not determine audio frame size.")
+        return
     time_to_vframe = float(video_reader_obj._pts_per_frame * video_reader_obj.stream.time_base)
     t2v = lambda t: int(t / time_to_vframe)
     v2t = lambda v: v * time_to_vframe
@@ -134,7 +137,7 @@ def _av_widget_function(image: Image, viewer: napari.Viewer, playback_speed: flo
             ar.close()
             raise sd.CallbackStop
 
-    audio_stream = sd.OutputStream(channels=2, callback=callback, blocksize=1024, samplerate=int(ar.audio_stream.codec_context.sample_rate*playback_speed))
+    audio_stream = sd.OutputStream(channels=2, callback=callback, blocksize=blocksize, samplerate=int(ar.audio_stream.codec_context.sample_rate*playback_speed))
     audio_stream.start()
     GLOBAL_STATE["playing"] = True
     _av_widget_function.call_button.set_icon("pause")
