@@ -193,7 +193,7 @@ class FastVideoReader:
 
     @property
     def size(self):
-        return np.product(self.shape)
+        return np.prod(self.shape)
 
     @staticmethod
     def static_shape(filename):

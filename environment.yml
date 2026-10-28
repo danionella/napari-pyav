@@ -10,5 +10,5 @@ dependencies:
   - av
   - python-sounddevice
   - qtpy
-  - scikit-image
+  - tqdm
   - magicgui

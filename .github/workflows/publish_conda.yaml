@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     # - name: Sleep for 2 mins
     #   run: sleep 120s
     #   shell: bash
@@ -24,9 +24,11 @@ jobs:
     #   with:
     #     python-version: '3.12'
     - name: Set up Miniconda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@v4
       with:
         miniconda-version: "latest"
+        channels: conda-forge
+        conda-remove-defaults: "true"   # the implicit defaults channel needs its terms of service accepted in CI
     - name: Install dependencies
       run: |
         conda install python=3.12 conda-build conda-verify anaconda-client
