@@ -1,7 +1,6 @@
 [project]
 name = "napari-pyav"
-#dynamic = ["version"]
-version = "0.1.1"
+version = "0.1.2"
 description = "Fast video reader and video (+sound) player widget for napari."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -19,14 +18,16 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Image Processing",
 ]
 requires-python = ">=3.9"
-dependencies = ["numpy", "napari[qt]", "scikit-image", "magicgui", "av", "sounddevice"]
+# no napari or Qt here (napari plugin guidelines): the plugin runs inside the user's napari, with its Qt
+dependencies = ["numpy", "av", "magicgui", "qtpy", "tqdm", "sounddevice"]
 
 [project.optional-dependencies]
+all = ["napari[all]"]   # pip install napari-pyav[all]: napari with its default Qt backend
 testing = [
-    "tox-uv",
     "pytest",     # https://docs.pytest.org/en/latest/contents.html
     "pytest-cov", # https://pytest-cov.readthedocs.io/en/latest/
     "pytest-qt",
@@ -57,8 +58,6 @@ where = ["src"]
 "*" = ["*.yaml"]
 
 
-[tool.setuptools.dynamic]
-version = { attr = "napari_pyav.__init__.__version__" }
 
 [tool.black]
 line-length = 120
